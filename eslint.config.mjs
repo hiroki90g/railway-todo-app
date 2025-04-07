@@ -11,16 +11,16 @@ export default defineConfig([
     languageOptions: { globals: globals.browser },
     plugins: {
       react: pluginReact,
-      prettier: pluginPrettier
+      prettier: pluginPrettier,
     },
     extends: [
       js.configs.recommended,
       pluginReact.configs.flat.recommended,
-      prettierConfig
+      prettierConfig,
     ],
     rules: {
       'react/react-in-jsx-scope': 'off',
-      'prettier/prettier': 'error'
+      'prettier/prettier': 'error',
     },
   },
 ]);

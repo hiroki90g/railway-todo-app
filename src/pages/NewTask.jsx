@@ -3,7 +3,7 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { url } from '../const';
 import { Header } from '../components/Header';
-import './newTask.css';
+import './newTask.scss';
 import { useNavigate } from 'react-router-dom';
 
 export const NewTask = () => {
@@ -11,17 +11,25 @@ export const NewTask = () => {
   const [lists, setLists] = useState([]);
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
+  const [limit, setLimit] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [cookies] = useCookies();
   const navigate = useNavigate();
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
+  const handleLimitChange = (e) => {
+    const localDateTime = e.target.value;
+    const DateTime = new Date(localDateTime)
+    const isoString = DateTime.toISOString().replace(/\.\d{3}Z$/, "Z");
+    setLimit(isoString);
+  };
   const handleSelectList = (id) => setSelectListId(id);
   const onCreateTask = () => {
     const data = {
       title: title,
       detail: detail,
       done: false,
+      limit: limit
     };
 
     axios
@@ -35,6 +43,7 @@ export const NewTask = () => {
       })
       .catch((err) => {
         setErrorMessage(`タスクの作成に失敗しました。${err}`);
+        console.log(data);
       });
   };
 
@@ -88,6 +97,14 @@ export const NewTask = () => {
             type="text"
             onChange={handleDetailChange}
             className="new-task-detail"
+          />
+          <br />
+          <label>期日</label>
+          <br />
+          <input
+            type="datetime-local"
+            onChange={handleLimitChange}
+            className="new-task-limit"
           />
           <br />
           <button

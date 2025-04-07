@@ -38,12 +38,6 @@
     "format": "prettier --write .",
     "fix": "npm run lint -- --fix && npm run format"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
