@@ -22,19 +22,23 @@ export const EditTask = () => {
   const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done');
   const handleLimitChange = (e) => {
     const localDateTime = e.target.value;
-    const dateTime = new Date(localDateTime)
+    const dateTime = new Date(localDateTime);
     const timeZone = 'Asia/Tokyo';
     const zonedDateTime = toZonedTime(dateTime, timeZone);
     const formattedDateTime = format(zonedDateTime, "yyyy-MM-dd'T'HH:mm");
     setLimit(formattedDateTime);
   };
   const onUpdateTask = () => {
-    const formattedLimit = formatInTimeZone(new Date(limit), 'UTC', "yyyy-MM-dd'T'HH:mm:ss'Z'");
+    const formattedLimit = formatInTimeZone(
+      new Date(limit),
+      'UTC',
+      "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    );
     const data = {
       title: title,
       detail: detail,
       done: isDone,
-      limit: formattedLimit
+      limit: formattedLimit,
     };
 
     axios

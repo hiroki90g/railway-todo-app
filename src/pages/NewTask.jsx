@@ -5,8 +5,8 @@ import { url } from '../const';
 import { Header } from '../components/Header';
 import './newTask.scss';
 import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns'
-import { toZonedTime, formatInTimeZone } from 'date-fns-tz'
+import { format } from 'date-fns';
+import { toZonedTime, formatInTimeZone } from 'date-fns-tz';
 
 export const NewTask = () => {
   const [selectListId, setSelectListId] = useState();
@@ -21,7 +21,7 @@ export const NewTask = () => {
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleLimitChange = (e) => {
     const localDateTime = e.target.value;
-    const dateTime = new Date(localDateTime)
+    const dateTime = new Date(localDateTime);
     const timeZone = 'Asia/Tokyo';
     const zonedDateTime = toZonedTime(dateTime, timeZone);
     const formattedDateTime = format(zonedDateTime, "yyyy-MM-dd'T'HH:mm");
@@ -29,12 +29,16 @@ export const NewTask = () => {
   };
   const handleSelectList = (id) => setSelectListId(id);
   const onCreateTask = () => {
-    const formattedLimit = formatInTimeZone(new Date(limit), 'UTC', "yyyy-MM-dd'T'HH:mm:ss'Z'");
+    const formattedLimit = formatInTimeZone(
+      new Date(limit),
+      'UTC',
+      "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    );
     const data = {
       title: title,
       detail: detail,
       done: false,
-      limit: formattedLimit
+      limit: formattedLimit,
     };
 
     axios
