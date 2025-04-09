@@ -5,6 +5,8 @@ import { useCookies } from 'react-cookie';
 import { url } from '../const';
 import { useNavigate, useParams } from 'react-router-dom';
 import './editTask.scss';
+import { format } from 'date-fns';
+import { toZonedTime, formatInTimeZone } from 'date-fns-tz';
 
 export const EditTask = () => {
   const navigate = useNavigate();
@@ -13,16 +15,26 @@ export const EditTask = () => {
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
   const [isDone, setIsDone] = useState();
+  const [limit, setLimit] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done');
+  const handleLimitChange = (e) => {
+    const localDateTime = e.target.value;
+    const dateTime = new Date(localDateTime)
+    const timeZone = 'Asia/Tokyo';
+    const zonedDateTime = toZonedTime(dateTime, timeZone);
+    const formattedDateTime = format(zonedDateTime, "yyyy-MM-dd'T'HH:mm");
+    setLimit(formattedDateTime);
+  };
   const onUpdateTask = () => {
-    console.log(isDone);
+    const formattedLimit = formatInTimeZone(new Date(limit), 'UTC', "yyyy-MM-dd'T'HH:mm:ss'Z'");
     const data = {
       title: title,
       detail: detail,
       done: isDone,
+      limit: formattedLimit
     };
 
     axios
@@ -67,6 +79,7 @@ export const EditTask = () => {
         setTitle(task.title);
         setDetail(task.detail);
         setIsDone(task.done);
+        setLimit(task.limit);
       })
       .catch((err) => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);
@@ -97,6 +110,16 @@ export const EditTask = () => {
             className="edit-task-detail"
             value={detail}
           />
+          <br />
+          <label>期日</label>
+          <br />
+          <input
+            type="datetime-local"
+            onChange={handleLimitChange}
+            className="edit-task-limit"
+            value={limit.replace(/:00Z$/, '')}
+          />
+          <br />
           <br />
           <div>
             <input

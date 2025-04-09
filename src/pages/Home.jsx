@@ -5,6 +5,8 @@ import axios from 'axios';
 import { Header } from '../components/Header';
 import { url } from '../const';
 import './home.scss';
+import { format, differenceInDays } from 'date-fns';
+import { toZonedTime, formatInTimeZone } from 'date-fns-tz';
 
 export const Home = () => {
   const [isDoneDisplay, setIsDoneDisplay] = useState('todo'); // todo->未完了 done->完了
@@ -134,18 +136,31 @@ const Tasks = (props) => {
           .filter((task) => {
             return task.done === true;
           })
-          .map((task, key) => (
-            <li key={key} className="task-item">
-              <Link
-                to={`/lists/${selectListId}/tasks/${task.id}`}
-                className="task-item-link"
-              >
-                {task.title}
-                <br />
-                {task.done ? '完了' : '未完了'}
-              </Link>
-            </li>
-          ))}
+          .map((task, key) => {
+            const deadlineJST = toZonedTime(new Date(task.limit), 'Asia/Tokyo');
+            const nowJST = toZonedTime(new Date(), 'Asia/Tokyo');
+            const remainingDays = differenceInDays(deadlineJST, nowJST);
+
+            return(
+              <li key={key} className="task-item">
+                <Link
+                  to={`/lists/${selectListId}/tasks/${task.id}`}
+                  className="task-item-link"
+                >
+                  {task.title}
+                  <br />
+                  {task.done ? '完了' : '未完了'}
+                  <br />                  
+                  期日：{format(toZonedTime(new Date(task.limit), 'Asia/Tokyo'), "yyyy/MM/dd HH:mm")} （
+                  { remainingDays >= 0
+                    ? `残り日数： ${remainingDays} 日`
+                    : `期日を ${Math.abs(remainingDays)} 日過ぎています`
+                  }        
+                  ）       
+                </Link>
+              </li>
+            )
+          })}
       </ul>
     );
   }
@@ -156,18 +171,30 @@ const Tasks = (props) => {
         .filter((task) => {
           return task.done === false;
         })
-        .map((task, key) => (
-          <li key={key} className="task-item">
-            <Link
-              to={`/lists/${selectListId}/tasks/${task.id}`}
-              className="task-item-link"
-            >
-              {task.title}
-              <br />
-              {task.done ? '完了' : '未完了'}
-            </Link>
-          </li>
-        ))}
+        .map((task, key) => {
+          const deadlineJST = toZonedTime(new Date(task.limit), 'Asia/Tokyo');
+          const nowJST = toZonedTime(new Date(), 'Asia/Tokyo');
+          const remainingDays = differenceInDays(deadlineJST, nowJST);
+
+          return(
+            <li key={key} className="task-item">
+              <Link
+                to={`/lists/${selectListId}/tasks/${task.id}`}
+                className="task-item-link"
+              >
+                {task.title}
+                <br />
+                {task.done ? '完了' : '未完了'}
+                <br />                  
+                期日：{format(toZonedTime(new Date(task.limit), 'Asia/Tokyo'), "yyyy/MM/dd HH:mm")} （
+                { remainingDays >= 0
+                  ? `残り日数： ${remainingDays} 日`
+                  : `期日を ${Math.abs(remainingDays)} 日過ぎています`
+                }        
+                ）  
+              </Link>
+            </li>
+          )})}
     </ul>
   );
 };
