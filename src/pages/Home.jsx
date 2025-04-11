@@ -64,7 +64,7 @@ export const Home = () => {
       .catch((err) => {
         setErrorMessage(`タスクの取得に失敗しました。${err}`);
       });
-    const tabRefs = useRef([]);
+    // const tabRefs = useRef([]);
   };
   return (
     <div>
@@ -162,6 +162,7 @@ const Tasks = (props) => {
                     toZonedTime(new Date(task.limit), 'Asia/Tokyo'),
                     'yyyy/MM/dd HH:mm'
                   )}
+                  <br />
                 </Link>
               </li>
             );
@@ -204,6 +205,7 @@ const Tasks = (props) => {
                   ? `残り: ${duration.days ?? 0} 日 ${duration.hours ?? 0} 時間 ${duration.minutes ?? 0} 分`
                   : `超過：${Math.abs(duration.days ?? 0)} 日 ${Math.abs(duration.hours ?? 0)} 時間 ${Math.abs(duration.minutes ?? 0)} 分`}
                 ）
+                <br />
               </Link>
             </li>
           );
