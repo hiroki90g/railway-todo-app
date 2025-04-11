@@ -178,11 +178,11 @@ const Tasks = (props) => {
           return task.done === false;
         })
         .map((task, key) => {
-          const deadlineJST = toZonedTime(new Date(task.limit), 'Asia/Tokyo');
+          const limitJST = toZonedTime(new Date(task.limit), 'Asia/Tokyo');
           const nowJST = toZonedTime(new Date(), 'Asia/Tokyo');
           const duration = intervalToDuration({
             start: nowJST,
-            end: deadlineJST,
+            end: limitJST,
           });
 
           return (

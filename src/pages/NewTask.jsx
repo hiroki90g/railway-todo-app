@@ -20,12 +20,11 @@ export const NewTask = () => {
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleLimitChange = (e) => {
-    const localDateTime = e.target.value;
-    const dateTime = new Date(localDateTime);
-    const timeZone = 'Asia/Tokyo';
-    const zonedDateTime = toZonedTime(dateTime, timeZone);
-    const formattedDateTime = format(zonedDateTime, "yyyy-MM-dd'T'HH:mm");
-    setLimit(formattedDateTime);
+    const formattedJSTLimit = format(
+      toZonedTime(new Date(e.target.value), 'Asia/Tokyo'),
+      "yyyy-MM-dd'T'HH:mm"
+    );
+    setLimit(formattedJSTLimit);
   };
   const handleSelectList = (id) => setSelectListId(id);
   const onCreateTask = () => {
