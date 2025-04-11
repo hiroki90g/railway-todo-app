@@ -190,7 +190,7 @@ const Tasks = (props) => {
                   'yyyy/MM/dd HH:mm'
                 )}
                 （
-                {duration.days >= 0
+                {duration.days > 0
                   ? `残り: ${duration.days} 日 ${duration.hours} 時間 ${duration.minutes} 分`
                   : `${Math.abs(duration.days)} 日過ぎています`}
                 ）

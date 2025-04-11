@@ -121,7 +121,14 @@ export const EditTask = () => {
             type="datetime-local"
             onChange={handleLimitChange}
             className="edit-task-limit"
-            value={limit.replace(/:00Z$/, '')}
+            value={
+              limit
+                ? format(
+                    toZonedTime(new Date(limit), 'Asia/Tokyo'),
+                    "yyyy-MM-dd'T'HH:mm"
+                  )
+                : ''
+            }
           />
           <br />
           <br />
