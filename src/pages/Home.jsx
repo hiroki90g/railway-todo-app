@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
@@ -64,6 +64,7 @@ export const Home = () => {
       .catch((err) => {
         setErrorMessage(`タスクの取得に失敗しました。${err}`);
       });
+    const tabRefs = useRef([]);
   };
   return (
     <div>
@@ -84,7 +85,7 @@ export const Home = () => {
               </p>
             </div>
           </div>
-          <ul className="list-tab">
+          <ul className="list-tab" role="tablist">
             {lists.map((list, key) => {
               const isActive = list.id === selectListId;
               return (
@@ -92,6 +93,15 @@ export const Home = () => {
                   key={key}
                   className={`list-tab-item ${isActive ? 'active' : ''}`}
                   onClick={() => handleSelectList(list.id)}
+                  role="tab"
+                  tabIndex={0}
+                  aria-selected={isActive ? 'true' : 'false'}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleSelectList(list.id);
+                    }
+                  }}
                 >
                   {list.title}
                 </li>

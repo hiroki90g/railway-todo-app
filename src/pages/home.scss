@@ -30,6 +30,10 @@
   align-items: center;
 }
 
+.list-tab-item:focus {
+  outline: 2px solid blue;
+}
+
 .active {
   background-color: #242f9b;
   color: #ffffff;
