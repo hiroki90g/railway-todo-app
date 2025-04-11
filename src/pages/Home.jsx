@@ -5,8 +5,8 @@ import axios from 'axios';
 import { Header } from '../components/Header';
 import { url } from '../const';
 import './home.scss';
-import { format, differenceInDays, intervalToDuration } from 'date-fns';
-import { toZonedTime, formatInTimeZone } from 'date-fns-tz';
+import { format, intervalToDuration } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 
 export const Home = () => {
   const [isDoneDisplay, setIsDoneDisplay] = useState('todo'); // todo->未完了 done->完了
@@ -191,8 +191,8 @@ const Tasks = (props) => {
                 )}
                 （
                 {duration.days > 0
-                  ? `残り: ${duration.days} 日 ${duration.hours} 時間 ${duration.minutes} 分`
-                  : `${Math.abs(duration.days)} 日過ぎています`}
+                  ? `残り: ${duration.days ?? 0} 日 ${duration.hours ?? 0} 時間 ${duration.minutes ?? 0} 分`
+                  : `超過：${Math.abs(duration.days ?? 0)} 日 ${Math.abs(duration.hours ?? 0)} 時間 ${Math.abs(duration.minutes ?? 0)} 分`}
                 ）
               </Link>
             </li>
